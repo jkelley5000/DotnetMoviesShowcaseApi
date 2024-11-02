@@ -1,7 +1,8 @@
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Configuration.AddJsonFile(@"C:\Users\da-at\OneDrive\Documents\GitHub\connections\DotnetMoviesShowcaseApiConnectionString.json", optional: false, reloadOnChange: true);
+var connectionString = builder.Configuration.GetConnectionString("MyConnection");
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
