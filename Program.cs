@@ -16,6 +16,15 @@ builder.Services.AddSwaggerGen(c =>
          Version = "v1" });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder
+            .WithOrigins("http://localhost:8000")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -27,6 +36,7 @@ if (app.Environment.IsDevelopment())
    });
 }
 
+app.UseCors("AllowSpecificOrigin");
 app.MapGet("/", () => "Hello World!");
 app.MapGet("/all-movies-shows", () => MoviesShowcaseDB.GetMoviesShows(connectionString));
 app.MapGet("/all-movies", () => MoviesShowcaseDB.GetMovies(connectionString));
@@ -47,6 +57,5 @@ app.MapGet("/shows-by-genre", (string? genre) =>
    }
    return MoviesShowcaseDB.GetShowsByGenre(connectionString, genre);
 });
-
 
 app.Run();
