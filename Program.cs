@@ -29,5 +29,7 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/", () => "Hello World!");
 app.MapGet("/all-movies-shows", () => MoviesShowcaseDB.GetMoviesShows(connectionString));
+app.MapGet("/all-movies", () => MoviesShowcaseDB.GetMovies(connectionString));
+app.MapGet("/all-shows", () => MoviesShowcaseDB.GetShows(connectionString));
 
 app.Run();
