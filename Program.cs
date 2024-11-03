@@ -31,5 +31,22 @@ app.MapGet("/", () => "Hello World!");
 app.MapGet("/all-movies-shows", () => MoviesShowcaseDB.GetMoviesShows(connectionString));
 app.MapGet("/all-movies", () => MoviesShowcaseDB.GetMovies(connectionString));
 app.MapGet("/all-shows", () => MoviesShowcaseDB.GetShows(connectionString));
+app.MapGet("/movies-by-genre", (string? genre) => 
+{
+   if (string.IsNullOrEmpty(genre))
+   {
+      return MoviesShowcaseDB.GetMovies(connectionString);
+   }
+   return MoviesShowcaseDB.GetMoviesByGenre(connectionString, genre);
+});
+app.MapGet("/shows-by-genre", (string? genre) => 
+{
+   if (string.IsNullOrEmpty(genre))
+   {
+      return MoviesShowcaseDB.GetShows(connectionString);
+   }
+   return MoviesShowcaseDB.GetShowsByGenre(connectionString, genre);
+});
+
 
 app.Run();

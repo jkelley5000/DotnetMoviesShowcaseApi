@@ -96,7 +96,7 @@ public class MoviesShowcaseDB {
 
     public static List<Movie> GetShows(string connectionString)
     {
-        var movies = new List<Movie>();
+        var shows = new List<Movie>();
 
         try 
         {
@@ -108,6 +108,50 @@ public class MoviesShowcaseDB {
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var show = new Movie
+                            {
+                                Id = reader.GetInt16(0),
+                                Title = reader.GetString(1),
+                                Type = reader.GetString(2),
+                                Genre = reader.GetString(3),
+                                Thumbnail_url = reader.GetString(4),
+                                Description = reader.GetString(5),
+                            };
+
+                            shows.Add(show);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex) 
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        return shows;
+    }
+
+    public static List<Movie> GetMoviesByGenre(string connectionString, string genre)
+    {
+        var movies = new List<Movie>();
+
+        try 
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM movies WHERE LOWER(Genre) LIKE '%' + LOWER(@genre) + '%'";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@genre", genre);
+
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -135,4 +179,49 @@ public class MoviesShowcaseDB {
 
         return movies;
     }
+
+    public static List<Movie> GetShowsByGenre(string connectionString, string genre)
+    {
+        var shows = new List<Movie>();
+
+        try 
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM shows WHERE LOWER(Genre) LIKE '%' + LOWER(@genre) + '%'";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@genre", genre);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var show = new Movie
+                            {
+                                Id = reader.GetInt16(0),
+                                Title = reader.GetString(1),
+                                Type = reader.GetString(2),
+                                Genre = reader.GetString(3),
+                                Thumbnail_url = reader.GetString(4),
+                                Description = reader.GetString(5),
+                            };
+
+                            shows.Add(show);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex) 
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        return shows;
+    }
+
 }
