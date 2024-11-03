@@ -10,7 +10,7 @@ public class MoviesShowcaseDB {
         _connectionString = connectionString;
     }
 
-    public static List<Movie> GetMovies(string connectionString)
+    public static List<Movie> GetMoviesShows(string connectionString)
     {
         var movies = new List<Movie>();
 
