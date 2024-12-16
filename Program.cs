@@ -57,5 +57,13 @@ app.MapGet("/shows-by-genre", (string? genre, MoviesShowsDbOperations dbOps) =>
    }
    return dbOps.GetShowsByGenre(genre);
 });
+app.MapGet("/search", (string? searchTerm, MoviesShowsDbOperations dbOps) =>
+{
+   if (string.IsNullOrEmpty(searchTerm))
+   {
+      return dbOps.GetMoviesShows();
+   }
+   return dbOps.GetMoviesShowsBySearch(searchTerm);
+});
 
 app.Run();

@@ -35,4 +35,10 @@ public class MoviesShowsDbOperations : BaseDbOperations
         LogOperation("GetShowsByGenre");
         return MoviesShowcaseDB.GetShowsByGenre(ConnectionString, genre);
     }
+
+    public override IEnumerable<object> GetMoviesShowsBySearch(string searchTerm)
+    {
+        LogOperation("GetMoviesShowsBySearch");
+        return MoviesShowcaseDB.GetMoviesShowsBySearch(ConnectionString, searchTerm);
+    }
 }

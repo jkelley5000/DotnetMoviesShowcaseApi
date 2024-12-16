@@ -224,4 +224,47 @@ public class MoviesShowcaseDB {
         return shows;
     }
 
+    public static List<Movie> GetMoviesShowsBySearch(string connectionString, string searchTerm)
+    {
+        var movies = new List<Movie>();
+
+        try 
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM v_all_movies_shows WHERE LOWER(title) LIKE '%' + LOWER(@searchTerm) + '%'";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@searchTerm", searchTerm);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var movie = new Movie
+                            {
+                                Id = reader.GetInt16(0),
+                                Title = reader.GetString(1),
+                                Type = reader.GetString(2),
+                                Genre = reader.GetString(3),
+                                Thumbnail_url = reader.GetString(4),
+                                Description = reader.GetString(5),
+                            };
+
+                            movies.Add(movie);
+                        }
+                    }
+                }
+            }
+        }
+        catch (Exception ex) 
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        return movies;
+    }
 }

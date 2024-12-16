@@ -17,4 +17,5 @@ public abstract class BaseDbOperations
     public abstract IEnumerable<object> GetShows();
     public abstract IEnumerable<object> GetMoviesByGenre(string genre);
     public abstract IEnumerable<object> GetShowsByGenre(string genre);
+    public abstract IEnumerable<object> GetMoviesShowsBySearch(string searchTerm);
 }
